@@ -127,3 +127,61 @@ Typical options include:
 - Monthly
 
 The appropriate schedule depends on the organization's patch management strategy.
+
+# Resources
+
+The **Resources** tab allows virtual machines to be assigned directly to the maintenance configuration.
+
+![Resources](images/maintenance-configuration-resources.png)
+
+*Assign resources to the maintenance configuration*
+
+## Direct Resource Assignment
+
+Virtual machines can be added manually by selecting **Add resources**.
+
+Azure Update Manager supports assigning:
+
+- Azure Virtual Machines
+- Azure Arc-enabled servers
+- Other supported resource types depending on the selected maintenance scope
+
+Once assigned, the selected resources will use this maintenance configuration during the configured maintenance window.
+
+---
+
+## When to use Direct Assignments
+
+Direct resource assignments are suitable for:
+
+- Small environments
+- Test environments
+- Individual virtual machines
+- Temporary maintenance configurations
+
+Since each virtual machine must be assigned manually, administration becomes increasingly complex as the environment grows.
+
+---
+
+## Dynamic Scopes (Recommended)
+
+For larger environments, Microsoft recommends using **Dynamic Scopes** instead of manually assigning resources.
+
+Dynamic Scopes automatically assign maintenance configurations based on resource properties such as:
+
+- Subscription
+- Resource Group
+- Location
+- Operating System
+- Resource Type
+- Tags
+
+This allows newly created virtual machines to be assigned automatically without modifying the maintenance configuration.
+
+> **Best Practice**
+>
+> Use direct resource assignments only for small or temporary environments. For production environments, Dynamic Scopes provide a more scalable and easier to maintain solution.
+
+> **Note**
+>
+> Dynamic Scopes are configured in the next step of the maintenance configuration wizard.
