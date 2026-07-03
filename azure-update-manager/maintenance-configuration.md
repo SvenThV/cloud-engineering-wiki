@@ -4,6 +4,10 @@ In this step, the basic settings for the Azure Update Manager maintenance config
 
 The following sections explain the most important configuration options.
 
+![Create Maintenance Configuration](images/maintenance-configuration-basics.png)
+
+*Azure Update Manager – Basics*
+
 ---
 
 ## Configuration Name
@@ -24,7 +28,7 @@ Example:
 
 The maintenance configuration is stored as an Azure resource and therefore requires an Azure region.
 
-In most environments, the same region as the remaining management resources is selected. The region of the maintenance configuration does **not** need to match the region of the virtual machines that will later be assigned to it.
+In most environments, the same region as the remaining management resources is selected.
 
 ---
 
@@ -41,71 +45,85 @@ This scope supports:
 - Azure Virtual Machines
 - Azure Arc-enabled servers
 
-Other maintenance scopes are intended for different Azure maintenance scenarios (for example host or platform maintenance) and are not used for operating system patching.
+Other maintenance scopes are intended for different Azure maintenance scenarios:
 
-> **Note**
+| Scope | Typical Use Case |
+|--------|------------------|
+| Guest | Operating system patching of Azure VMs and Arc-enabled servers |
+| Host | Azure Dedicated Hosts and isolated infrastructure |
+| OS Image (VMSS) | Updating Virtual Machine Scale Set images |
+| Resource | Azure platform resources supporting Maintenance Configurations |
+
+> **Best Practice**
 >
-> This guide focuses on patch management for Azure Virtual Machines and Azure Arc-enabled servers using the **Guest** maintenance scope.
+> For standard Windows and Linux virtual machines, use the **Guest** maintenance scope.
 
 ---
 
 ## Reboot Setting
 
-The **Reboot setting** determines how Azure Update Manager handles system reboots after installing updates.
+The **Reboot setting** determines how Azure Update Manager handles required restarts after update installation.
 
-The following options are available:
+Available options:
 
 ### Reboot if required (Recommended)
 
-Azure Update Manager automatically reboots the machine **only if an installed update requires a restart**.
+Only reboots the machine when required by an installed update.
 
-This is the recommended setting for most environments, as unnecessary reboots are avoided while ensuring that updates requiring a restart are completed successfully.
+Recommended for most production environments.
 
 ### Never reboot
 
-Updates are installed, but Azure Update Manager never performs an automatic restart.
+No automatic restart is performed.
 
-If a reboot is required, it must be performed manually or by another automation process.
+Suitable when reboots are controlled manually or by another automation process.
 
 ### Always reboot
 
-The machine is restarted after every maintenance run, regardless of whether a reboot is required.
+The machine is restarted after every maintenance run.
 
-This option is rarely used and is generally not recommended unless specifically required by operational procedures.
+Typically only used in dedicated maintenance environments.
 
 ---
 
 ## Schedule
 
-The schedule defines **when** and **how often** the maintenance configuration is executed.
+The schedule defines **when** Azure Update Manager is allowed to install updates.
 
-The following settings are configured:
+Click **Edit schedule** to configure the maintenance window.
 
-- **Start time** – Date and time of the first maintenance window
-- **Time zone** – Time zone used for the schedule
-- **Maintenance window** – Duration of the maintenance window
-- **Recurrence** – Defines how often the maintenance window repeats (for example weekly or monthly)
+![Configure Maintenance Schedule](images/maintenance-configuration-schedule.png)
+
+*Maintenance schedule configuration*
+
+The following options can be configured:
+
+- Start date and time
+- Time zone
+- Maintenance window duration
+- Recurrence (Daily, Weekly or Monthly)
+- Optional end date
 
 ### Maintenance Window
 
-The maintenance window should be large enough to allow Azure Update Manager to:
+The maintenance window should be long enough to:
 
 - Assess available updates
-- Download required packages
+- Download update packages
 - Install updates
-- Perform a reboot (if required)
+- Reboot the operating system (if required)
 - Complete post-reboot update operations
 
-For production environments, a maintenance window of several hours is commonly used. The exact duration depends on the operating system, the number of available updates, and the expected reboot time.
+For production environments, maintenance windows between two and four hours are commonly used.
 
----
+### Recurrence
 
-## Summary
+Azure Update Manager supports recurring maintenance windows.
 
-For the examples used throughout this guide, the following configuration is used:
+Typical options include:
 
-| Setting | Value |
-|---------|-------|
-| Maintenance scope | Guest (Azure VM, Arc-enabled VMs/servers) |
-| Reboot setting | Reboot if required |
-| Schedule | Weekly maintenance window |
+- Daily
+- Weekly
+- Monthly
+
+The appropriate schedule depends on the organization's patch management strategy.
