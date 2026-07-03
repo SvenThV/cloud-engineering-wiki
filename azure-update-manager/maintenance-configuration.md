@@ -185,3 +185,78 @@ This allows newly created virtual machines to be assigned automatically without 
 > **Note**
 >
 > Dynamic Scopes are configured in the next step of the maintenance configuration wizard.
+
+# Dynamic Scopes
+
+A **Dynamic Scope** automatically assigns virtual machines to a maintenance configuration based on predefined filter criteria.
+
+Instead of manually assigning individual virtual machines, Azure Update Manager evaluates the configured filters whenever a maintenance window starts and automatically includes all matching resources.
+
+This significantly reduces administrative effort and ensures that newly deployed virtual machines are automatically included without modifying the maintenance configuration.
+
+![Dynamic Scopes](images/maintenance-configuration-dynamic-scopes.png)
+
+*Maintenance Configuration – Dynamic Scopes*
+
+---
+
+## Create a Dynamic Scope
+
+Select **Add a dynamic scope** to create a new assignment.
+
+A dynamic scope always requires at least one Azure subscription. Additional filters can then be applied to limit the scope.
+
+![Create Dynamic Scope](images/dynamic-scope-create.png)
+
+*Create a Dynamic Scope*
+
+---
+
+## Available Filter Options
+
+Dynamic Scopes support multiple filter criteria that can be combined.
+
+![Dynamic Scope Filters](images/dynamic-scope-filters.png)
+
+*Available Dynamic Scope filter options*
+
+| Filter | Description | Typical Use Case |
+|---------|-------------|------------------|
+| Resource Groups | Includes only resources from selected resource groups. | Separate production and test environments. |
+| Resource Types | Limits the scope to specific Azure resource types. | Target only Azure Virtual Machines. |
+| Locations | Includes resources from selected Azure regions. | Regional maintenance windows. |
+| OS Types | Filters Windows or Linux systems. | Separate maintenance schedules for Windows and Linux. |
+| Tags | Assigns resources based on Azure tags. | Patch rings, application owners, business units or environments. |
+
+Multiple filters can be combined to create highly granular maintenance scopes.
+
+---
+
+## Using Tags
+
+Azure tags are commonly used to control maintenance assignments.
+
+Typical examples include:
+
+| Tag | Example Values |
+|-----|----------------|
+| Environment | Production, Test, Development |
+| PatchRing | Ring1, Ring2 |
+| SecurityUpdates | withRESTART, withoutRESTART |
+| FeatureUpdates | Ring1, Ring2 |
+
+This approach allows maintenance configurations to be assigned automatically based on the role or lifecycle of a virtual machine.
+
+---
+
+## Preview
+
+Before saving the Dynamic Scope, Azure displays a preview of all matching resources.
+
+This allows administrators to verify that the configured filters return the expected virtual machines before the maintenance configuration is applied.
+
+---
+
+> **Best Practice**
+>
+> For production environments, Microsoft recommends using Dynamic Scopes instead of manually assigning resources. Tag-based assignments are easier to maintain, scale automatically as new virtual machines are deployed, and reduce ongoing administrative effort.
