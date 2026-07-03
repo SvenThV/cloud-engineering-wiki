@@ -1,18 +1,16 @@
-# Maintenance Configurations
+# Create a Maintenance Configuration
 
 ## Overview
 
-A Maintenance Configuration defines when and how operating system updates are installed on virtual machines.
+A Maintenance Configuration defines when and how Azure Update Manager installs operating system updates.
 
 It specifies:
 
-- Maintenance window
+- Maintenance scope
+- Maintenance schedule
 - Update classifications
 - Reboot behavior
-- Recurrence schedule
 - Target resources
-
-Maintenance Configurations can be assigned directly to virtual machines or automatically using Dynamic Scopes.
 
 ---
 
@@ -20,10 +18,9 @@ Maintenance Configurations can be assigned directly to virtual machines or autom
 
 Before creating a Maintenance Configuration, ensure that:
 
-- Azure Update Manager is available.
+- Azure Update Manager is enabled.
 - The target virtual machines are onboarded.
 - The required permissions are available.
-- The virtual machines are configured for Azure Update Manager.
 
 ---
 
@@ -35,27 +32,133 @@ Navigate to:
 
 Configure the basic settings.
 
-Example configuration:
-
-| Setting | Value |
-|---------|-------|
-| Scope | Guest |
-| Region | West Europe |
-| Reboot setting | Reboot if required |
-
-> **Note**
->
-> The maintenance scope **Guest** is used for Azure Virtual Machines and Azure Arc-enabled servers.
-
 ![Create Maintenance Configuration](images/maintenance-configuration-create.png)
 
 *Create a Maintenance Configuration*
 
+### Basic Settings
+
+| Setting | Description |
+|---------|-------------|
+| Subscription | Azure subscription in which the Maintenance Configuration is created. |
+| Resource Group | Resource group that stores the Maintenance Configuration. |
+| Configuration name | Unique name of the Maintenance Configuration. |
+| Region | Azure region where the Maintenance Configuration is deployed. |
+
 ---
 
-## Step 2 – Configure the Schedule
+## Maintenance Scope
 
-Define the maintenance window.
+The **Maintenance scope** determines which Azure resources can be managed by the Maintenance Configuration.
+
+![Maintenance Scope](images/maintenance-scope-options.png)
+
+*Available maintenance scopes*
+
+### Guest
+
+Updates the operating system of:
+
+- Azure Virtual Machines
+- Azure Arc-enabled Servers
+
+Supports:
+
+- Windows Updates
+- Linux package updates
+- Custom update classifications
+
+> **Recommended for operating system patching of Azure VMs and Arc-enabled servers.**
+
+### Host
+
+Used for Azure Dedicated Hosts and isolated infrastructure.
+
+Azure performs platform maintenance on the physical host infrastructure rather than the guest operating system.
+
+Typical scenarios:
+
+- Azure Dedicated Hosts
+- Isolated Virtual Machine Scale Sets
+
+### OS Image (VMSS)
+
+Updates the operating system image of a Virtual Machine Scale Set.
+
+Used when managing image-based updates for VMSS instances.
+
+### Resource
+
+Used for Azure platform resources that support Maintenance Configurations.
+
+Examples include:
+
+- Virtual Network Gateways
+- Network Security Gateways (when supported)
+- other Azure platform resources
+
+---
+
+## Reboot Setting
+
+The reboot setting controls how Azure Update Manager handles system restarts after installing updates.
+
+![Reboot Settings](images/maintenance-reboot-settings.png)
+
+*Available reboot options*
+
+### Always reboot
+
+Always restarts the operating system after update installation.
+
+Use when:
+
+- maintenance windows are dedicated to patching
+- a restart is always acceptable
+
+---
+
+### Reboot if required
+
+The operating system is restarted only if an installed update requires it.
+
+This is the recommended option for most production environments.
+
+---
+
+### Never reboot
+
+Azure Update Manager never initiates a restart.
+
+Use when:
+
+- reboots are controlled by another process
+- applications require manual validation before restarting
+
+> **Important:** Some updates are not fully applied until the operating system has been restarted.
+
+---
+
+## Schedule
+
+The maintenance schedule defines when updates are allowed to be installed.
+
+Available options include:
+
+- One-time schedule
+- Hourly
+- Daily
+- Weekly
+- Monthly
+
+Depending on the selected frequency, additional settings become available, for example:
+
+- Start time
+- Time zone
+- Maintenance window duration
+- Day of week
+- Week of month
+- End date
 
 Example:
 
@@ -63,80 +166,20 @@ Example:
 |---------|-------|
 | Frequency | Monthly |
 | Occurrence | Second Saturday |
-| End Date | None |
-
-The schedule defines when updates are allowed to be installed.
-
-![Maintenance Schedule](images/maintenance-configuration-schedule.png)
-
-*Configure the maintenance schedule*
+| Start time | 00:00 |
+| Duration | 3 hours 55 minutes |
+| End date | None |
 
 ---
 
-## Step 3 – Configure Update Classifications
+## Next Step
 
-Select the operating system update categories that should be installed.
+After configuring the basic settings, continue with:
 
-Examples include:
-
-Windows
-
-- Critical Updates
-- Security Updates
-- Update Rollups
-- Feature Packs
-- Service Packs
-- Definition Updates
-- Updates
-
-Linux
-
-- Security Updates
-- Critical Updates
-- Other Updates
-
-Only the selected update classifications will be installed during the maintenance window.
-
-![Update Classifications](images/maintenance-configuration-update-classifications.png)
-
-*Configure update classifications*
-
----
-
-## Step 4 – Configure Reboot Behavior
-
-Azure Update Manager supports different reboot options.
-
-Available options include:
-
-- Never reboot
-- Reboot if required
-- Always reboot
-
-The selected option controls how operating system updates are finalized after installation.
-
----
-
-## Step 5 – Review and Create
-
-Review the configuration and create the Maintenance Configuration.
-
-After deployment, it becomes available for assignment to virtual machines or Dynamic Scopes.
-
----
-
-## Verification
-
-Open the created Maintenance Configuration.
-
-Verify:
-
-- Schedule
-- Update classifications
-- Reboot behavior
-- Assigned resources
+- Resources
 - Dynamic Scopes
+- Update Classifications
+- Events
+- Tags
 
-![Maintenance Configuration Overview](images/maintenance-configuration-overview.png)
-
-*Maintenance Configuration overview*
+These topics are covered in separate articles.
