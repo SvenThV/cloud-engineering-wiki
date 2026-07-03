@@ -260,3 +260,108 @@ This allows administrators to verify that the configured filters return the expe
 > **Best Practice**
 >
 > For production environments, Microsoft recommends using Dynamic Scopes instead of manually assigning resources. Tag-based assignments are easier to maintain, scale automatically as new virtual machines are deployed, and reduce ongoing administrative effort.
+
+# Updates
+
+The **Updates** tab defines which operating system updates Azure Update Manager installs during the configured maintenance window.
+
+Updates can be selected by **classification** or by explicitly including or excluding individual Windows Knowledge Base (KB) updates or Linux packages.
+
+![Maintenance Configuration - Updates](images/maintenance-configuration-updates.png)
+
+*Maintenance Configuration – Updates*
+
+---
+
+## Update Classifications
+
+Azure Update Manager groups operating system updates into different classifications.
+
+Select **Include update classification** to choose which update categories should be installed.
+
+![Update Classifications](images/maintenance-configuration-update-classifications.png)
+
+*Select update classifications*
+
+### Windows Update Classifications
+
+| Classification | Description | Recommendation |
+|---------------|-------------|----------------|
+| Critical updates | Updates that address critical, non-security issues affecting system stability or reliability. | Recommended |
+| Security updates | Updates that address known security vulnerabilities. | Strongly recommended |
+| Update rollups | Collections of multiple updates bundled into a single package. | Recommended in most environments |
+| Feature packs | Introduces new Windows features and functionality. | Evaluate before deployment |
+| Service packs | Large collections of updates and fixes for older Windows versions. Rarely used on modern Windows Server versions. | Only if applicable |
+| Definition updates | Updates for Microsoft Defender and other security definitions. | Recommended |
+| Tools | Additional Microsoft tools that are distributed through Windows Update. | Usually not required |
+| Updates | General updates that do not belong to another classification. | Evaluate depending on the environment |
+
+### Linux Update Classifications
+
+| Classification | Description | Recommendation |
+|---------------|-------------|----------------|
+| Security and critical updates | Security fixes and critical operating system updates. | Strongly recommended |
+| Other updates | All remaining package updates. | Evaluate depending on maintenance strategy |
+
+---
+
+## Recommended Configuration
+
+For production environments, Microsoft generally recommends installing security-related updates regularly.
+
+A common configuration includes:
+
+### Windows
+
+- Critical updates
+- Security updates
+- Definition updates
+
+### Linux
+
+- Security and critical updates
+
+Feature updates or feature packs are often deployed separately after validation to reduce operational risk.
+
+---
+
+## Include KB ID / Package
+
+Specific Windows KB updates or Linux packages can be explicitly included.
+
+Examples:
+
+Windows
+
+- KB5035857
+- KB5036892
+
+Linux
+
+- openssh
+- kernel
+- nginx
+
+This option is useful when:
+
+- deploying a specific security fix,
+- validating a newly released update,
+- installing an update outside the regular maintenance cycle.
+
+---
+
+## Exclude KB ID / Package
+
+Specific Windows KB updates or Linux packages can also be excluded from installation.
+
+This is useful when:
+
+- an update is known to cause compatibility issues,
+- an application vendor has not yet approved a specific update,
+- a temporary workaround is required until Microsoft releases a corrected version.
+
+Excluded updates are skipped even if they belong to a selected update classification.
+
+> **Best Practice**
+>
+> Use **Include** and **Exclude KB ID / Package** only for exceptional situations. In most environments, update deployment should be managed through update classifications rather than individual KBs or packages, as this reduces administrative effort and simplifies long-term maintenance.
