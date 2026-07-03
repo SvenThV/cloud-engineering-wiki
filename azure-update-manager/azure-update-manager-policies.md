@@ -245,3 +245,194 @@ Azure Arc-enabled Windows or Linux servers.
 ### Recommendation
 
 Recommended whenever Azure Arc-enabled servers are managed through Azure Update Manager.
+
+# Assigning a Policy
+
+After selecting a built-in policy, create a new policy assignment by selecting **Assign**.
+
+The assignment determines where the policy is applied, how compliance is enforced, and whether Azure is allowed to remediate non-compliant resources automatically.
+
+---
+
+## Basics
+
+The **Basics** tab defines the scope of the policy assignment.
+
+![Policy Assignment - Basics](images/policy-assignment-basics.png)
+
+*Policy Assignment – Basics*
+
+The following settings are available:
+
+| Setting | Description |
+|---------|-------------|
+| **Scope** | Defines where the policy is applied. The scope can be a management group, subscription, resource group or individual resource. |
+| **Exclusions** | Excludes specific resources or resource groups from the assignment. |
+| **Policy Definition** | The built-in policy that will be assigned. |
+| **Assignment Name** | Friendly name displayed in Azure Policy. |
+| **Description** | Optional description of the assignment. |
+| **Policy Enforcement** | Determines whether the policy actively enforces compliance or only evaluates resources. |
+
+### Scope
+
+The selected scope determines which resources are evaluated by Azure Policy.
+
+Whenever possible, assign policies at the highest practical scope (for example a subscription or management group) to ensure consistent governance.
+
+Smaller scopes may be appropriate for:
+
+- Pilot deployments
+- Test environments
+- Proof of Concepts
+- Department-specific configurations
+
+### Exclusions
+
+Exclusions prevent specific resources from being evaluated.
+
+Typical scenarios include:
+
+- Test virtual machines
+- Legacy applications
+- Temporary exceptions
+
+Exclusions should be used sparingly and reviewed regularly.
+
+---
+
+## Parameters
+
+The **Parameters** tab allows the built-in policy to be customized without modifying the policy definition.
+
+![Policy Assignment - Parameters](images/policy-assignment-parameters.png)
+
+*Policy Assignment – Parameters*
+
+The available parameters depend on the selected policy.
+
+Typical examples include:
+
+- Maintenance Configuration
+- Assessment Mode
+- Patch Orchestration Mode
+- Resource Tags
+- Azure Regions
+- Operating System
+
+Parameters make a single built-in policy reusable across different Azure environments.
+
+---
+
+## Remediation
+
+Some Azure Policy effects can automatically bring existing resources into compliance.
+
+![Policy Assignment - Remediation](images/policy-assignment-remediation.png)
+
+*Policy Assignment – Remediation*
+
+Policies using **Modify** or **DeployIfNotExists** support remediation.
+
+When remediation is enabled, Azure creates remediation tasks that apply the required configuration to existing resources.
+
+Without remediation, existing resources remain unchanged until they are updated manually.
+
+### When should remediation be enabled?
+
+Automatic remediation is useful when:
+
+- onboarding existing virtual machines
+- migrating to Azure Update Manager
+- standardizing large environments
+
+For initial deployments, many organizations first assign the policy, verify compliance, and enable remediation afterwards.
+
+---
+
+## Managed Identity
+
+Policies using **Modify** or **DeployIfNotExists** require a Managed Identity.
+
+![Policy Assignment - Managed Identity](images/policy-assignment-managed-identity.png)
+
+*Policy Assignment – Managed Identity*
+
+Azure Policy uses the Managed Identity to make configuration changes on behalf of the policy assignment.
+
+Without a Managed Identity, Azure can evaluate compliance but cannot deploy or modify Azure resources.
+
+### Identity Type
+
+Azure supports two identity types.
+
+| Identity | Description | Typical Use Case |
+|----------|-------------|------------------|
+| **System Assigned** | Created and managed automatically by Azure. Deleted together with the policy assignment. | Recommended for most environments. |
+| **User Assigned** | Standalone Azure resource that can be reused by multiple policy assignments. | Enterprise environments requiring centralized identity management. |
+
+### Required Permissions
+
+The Managed Identity requires sufficient Azure RBAC permissions on the assignment scope.
+
+The required role depends on the policy definition.
+
+Many Azure Update Manager policies require the **Contributor** role to deploy or modify Azure resources.
+
+> **Best Practice**
+>
+> Use **System Assigned Managed Identities** unless a reusable identity is explicitly required.
+
+---
+
+## Non-compliance Messages
+
+Azure Policy allows administrators to define custom compliance messages.
+
+![Policy Assignment - Non-compliance Messages](images/policy-assignment-non-compliance.png)
+
+*Policy Assignment – Non-compliance Messages*
+
+Custom messages are displayed whenever a resource violates the assigned policy.
+
+Typical use cases include:
+
+- Explaining why a deployment was denied.
+- Providing remediation instructions.
+- Linking to internal documentation.
+- Referencing company governance standards.
+
+Although optional, custom messages improve the user experience by making policy violations easier to understand.
+
+---
+
+## Review + Create
+
+The final step summarizes the complete policy assignment.
+
+Review:
+
+- Assignment Scope
+- Policy Definition
+- Parameters
+- Managed Identity
+- Policy Enforcement
+
+After validation, create the policy assignment.
+
+Azure immediately begins evaluating resources within the selected scope.
+
+Policies using **Modify** or **DeployIfNotExists** can then create remediation tasks to bring existing resources into compliance.
+
+---
+
+# Best Practices
+
+The following recommendations have proven useful when implementing Azure Update Manager with Azure Policy.
+
+- Assign policies at the highest practical scope.
+- Test new policies in a limited environment before assigning them broadly.
+- Prefer **System Assigned Managed Identities** unless a reusable identity is required.
+- Enable remediation only after validating the policy configuration.
+- Review Azure Policy compliance regularly.
+- Combine Azure Policies with Dynamic Scopes and Azure Tags to simplify long-term management.
+- Use descriptive assignment names to distinguish between different maintenance strategies.
