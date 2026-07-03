@@ -136,10 +136,6 @@ Typical examples include:
 
 ---
 
-## Next Step
-
-After the basic configuration has been completed, virtual machines can either be assigned directly or automatically by using **Dynamic Scopes**. The next section explains both approaches.
-
 # Resources
 
 The **Resources** tab allows Azure resources to be assigned directly to the Maintenance Configuration.
@@ -217,9 +213,6 @@ Using Dynamic Scopes together with Azure Tags enables virtual machines to be ass
 
 ---
 
-## Next Step
-
-The next step configures **Dynamic Scopes**, allowing resources to be assigned automatically using Azure resource properties such as subscriptions, resource groups, operating systems, locations, or tags.
 # Dynamic Scopes
 
 A **Dynamic Scope** automatically assigns Azure resources to a Maintenance Configuration based on predefined filter criteria.
@@ -318,10 +311,6 @@ Some common recommendations include:
 - Avoid overly complex filter combinations unless required.
 
 ---
-
-## Next Step
-
-After the target resources have been defined, the next step is to configure **Updates**, where the update classifications and optional include/exclude rules are specified.
 
 # Updates
 
@@ -451,10 +440,6 @@ When configuring update classifications:
 - Validate feature updates before deploying them to production systems.
 
 ---
-
-## Next Step
-
-After defining which updates should be installed, the next step is to configure **Events**. Event subscriptions allow Azure Update Manager to trigger automated workflows before or after a maintenance window by using Azure Event Grid.
 
 # Events
 
