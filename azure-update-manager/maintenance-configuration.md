@@ -365,3 +365,93 @@ Excluded updates are skipped even if they belong to a selected update classifica
 > **Best Practice**
 >
 > Use **Include** and **Exclude KB ID / Package** only for exceptional situations. In most environments, update deployment should be managed through update classifications rather than individual KBs or packages, as this reduces administrative effort and simplifies long-term maintenance.
+
+# Events
+
+The **Events** tab allows Azure Update Manager to publish events before and after a maintenance window.
+
+These events can be consumed by Azure Event Grid and used to trigger automated workflows, notifications, or operational tasks.
+
+![Maintenance Configuration - Events](images/maintenance-configuration-events.png)
+
+*Maintenance Configuration – Events*
+
+---
+
+## Event Subscriptions
+
+Select **Add Event subscription** to create an Event Grid subscription for the maintenance configuration.
+
+An event subscription forwards Azure Update Manager events to a supported destination, such as:
+
+- Azure Functions
+- Azure Logic Apps
+- Azure Automation
+- Azure Event Hubs
+- Azure Service Bus
+- Webhooks
+- Azure Storage Queues
+
+This enables automated actions before or after a maintenance window without manual intervention.
+
+---
+
+## Supported Event Types
+
+Azure Update Manager publishes two event types:
+
+### Pre-maintenance
+
+Triggered before the maintenance window starts.
+
+Typical use cases include:
+
+- Notify administrators about upcoming maintenance
+- Stop business applications gracefully
+- Disable monitoring alerts
+- Drain Azure Virtual Desktop session hosts
+- Create snapshots or backups before patching
+
+> **Note**
+>
+> Microsoft recommends scheduling pre-maintenance actions at least **40 minutes** before the maintenance window begins to ensure there is sufficient time for execution.
+
+---
+
+### Post-maintenance
+
+Triggered after the maintenance run has completed.
+
+Typical use cases include:
+
+- Send completion notifications
+- Re-enable monitoring alerts
+- Start previously stopped services
+- Execute validation or health checks
+- Trigger follow-up automation
+
+---
+
+## Typical Architecture
+
+A common implementation is:
+
+```text
+Azure Update Manager
+        │
+        ▼
+Azure Event Grid
+        │
+        ├── Azure Function
+        ├── Logic App
+        ├── Automation Runbook
+        └── Webhook
+```
+
+This approach enables event-driven automation without requiring manual interaction.
+
+---
+
+> **Best Practice**
+>
+> Event subscriptions are optional and are primarily intended for environments that require automated operational workflows before or after patch installation. For smaller environments, Maintenance Configurations can be used without configuring event subscriptions.
