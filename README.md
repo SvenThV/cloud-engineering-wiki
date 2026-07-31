@@ -12,18 +12,18 @@ The goal is not only to deepen my own understanding, but also to build a structu
 
 The wiki primarily focuses on Azure and cloud-related technologies, including:
 
-- ☁️ Microsoft Azure
-- 🌐 Azure Networking
-- 🔐 Microsoft Entra ID & Identity
-- 📊 Azure Monitoring
-- 💾 Azure Storage
-- 🛡️ Azure Governance & Security
-- 🚀 Container Apps
-- ⚙️ GitHub Actions & CI/CD
-- 🏗️ Infrastructure as Code (Terraform)
-- ☸️ Kubernetes
-- 🖥️ Windows Server & On-Premises Fundamentals
-- 🔍 Troubleshooting & Best Practices
+- Microsoft Azure
+- Azure Networking
+- Microsoft Entra ID & Identity
+- Azure Monitoring
+- Azure Storage
+- Azure Governance & Security
+- Container Apps
+- GitHub Actions & CI/CD
+- Infrastructure as Code (Terraform)
+- Kubernetes
+- Windows Server & On-Premises Fundamentals
+- Troubleshooting & Best Practices
 
 The content is continuously expanded as I gain new experience and explore additional technologies.
 
