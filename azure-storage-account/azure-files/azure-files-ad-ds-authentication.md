@@ -33,7 +33,6 @@ Azure Storage Account
         ▼
 Azure File Share
 ```
-
 ---
 
 # Authentication Options
