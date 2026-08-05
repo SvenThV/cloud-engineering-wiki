@@ -15,24 +15,23 @@ This guide describes how to configure Azure Files with Active Directory Domain S
 # Architecture
 
 ```text
-                Active Directory Domain Services
-                ┌───────────────────────────────┐
-                │                               │
-                │  Domain Controller            │
-                │  Kerberos Authentication      │
-                │                               │
-                └──────────────┬────────────────┘
-                               │
-                               │
-                               ▼
-                 Azure Storage Account
-          (Identity-based Authentication)
-                               │
-                               ▼
-                     Azure File Share (SMB)
-                               │
-                               ▼
-                     Windows Domain Client
+                 Active Directory Domain Services
+                 ┌───────────────────────────────┐
+                 │        Domain Controller      │
+                 │   Issues Kerberos Tickets     │
+                 └──────────────┬────────────────┘
+                                ▲
+                                │ Kerberos
+                                │
+                                │
+Windows Domain Client ───────────┘
+        │
+        │ SMB + Kerberos Ticket
+        ▼
+Azure Storage Account
+        │
+        ▼
+Azure File Share
 ```
 
 ---
