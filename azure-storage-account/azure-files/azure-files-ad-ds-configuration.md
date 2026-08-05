@@ -1,5 +1,3 @@
----
-
 # Enable Active Directory Authentication
 
 After creating the Storage Account and Azure File Share, identity-based authentication must be enabled.
